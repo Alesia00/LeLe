@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class ForCube : MonoBehaviour
 {
     public float Speed = 10f;
+    public Rigidbody rb;
+    public float force = 10f;
     public int a;
     public int b;
     public int c;
@@ -16,14 +18,19 @@ public class ForCube : MonoBehaviour
     public GameObject bcam;
     void Start()
     {
-
+        rb = GetComponent<Rigidbody>();
+        c = 100;
+        
     }
 
     // Update is called once per frame
     void FixedUpdate()
-    {
-
-
+    {    
+        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+           rb.AddForce(Vector3.up * force, ForceMode.Impulse);
+        }
         if (Input.GetKey(KeyCode.W))
         {
             transform.Translate(Vector3.forward * Speed * Time.deltaTime);
@@ -47,16 +54,10 @@ public class ForCube : MonoBehaviour
             cam.SetActive(true);
             bcam.SetActive(false);
             this.gameObject.SetActive(false);
-            x.text = "Конец";
+            x.text = "Конец игры";
         }
         else x.text = c.ToString();
-        if (Input.GetKey(KeyCode.Space))
-        {
-            a = Random.Range(0, 255);
-            b = Random.Range(0, 255);
-            c = Random.Range(0, 255);
-            this.gameObject.GetComponent<Renderer>().material.color = new Color32((byte)a, (byte)b, (byte)c, 1);
-        }
+        
     }
     private void OnMouseDown()
     {
@@ -77,8 +78,9 @@ public class ForCube : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("CEN");
-        this.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
+        this.gameObject.GetComponent<Renderer>().material.color = Color.red;
         c--;
+        
     }
     private void OnCollisionExit(Collision collision)
     {
@@ -103,6 +105,6 @@ public class ForCube : MonoBehaviour
     }
     public void heal()
     {
-        c = 10;
+        c = c + 10;
     }
 }
